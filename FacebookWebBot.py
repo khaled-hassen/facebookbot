@@ -117,7 +117,6 @@ class FacebookBot(webdriver.PhantomJS):
     def get(self, url):
         """The make the driver go to the url but reformat the url if is for facebook page"""
         super().get(mfacebookToBasic(url))
-        self.save_screenshot("Debug.png")
 
     def login(self, email, password):
         """Log to facebook using email (str) and password (str)"""
@@ -129,6 +128,8 @@ class FacebookBot(webdriver.PhantomJS):
         pass_element = self.find_element_by_name("pass")
         pass_element.send_keys(password)
         pass_element.send_keys(Keys.ENTER)
+        if self.find_element_by_class_name("bi"):
+            self.find_element_by_class_name("bp").click();
         try:
             self.find_element_by_name("xc_message")
             print("Logged in")
@@ -350,7 +351,7 @@ class FacebookBot(webdriver.PhantomJS):
         self.get(url)
         name = self.title
         try:
-            mb = self.find_elements_by_class_name("bx")
+            mb = self.find_elements_by_css_selector('table>tbody>tr>td>a')
         except NoSuchElementException:
             print("Can't message to ", name)
             return False
@@ -362,7 +363,7 @@ class FacebookBot(webdriver.PhantomJS):
         self.get(mm)
         b = self.find_element_by_name("body")
         b.send_keys(text)
-        self.find_element_by_name("Send").click()
+        self.find_element_by_name("send").click()
         return True
 
     def getGroups(self):
@@ -460,53 +461,3 @@ class FacebookBot(webdriver.PhantomJS):
             except BaseException:
                 pass
         return pList
-    def getAlbums(self,profileURL):
-    	self.get(profileURL+"/photos/?refid=17")
-    	more=bot.find_element_by_class_name("cb")
-    	self.get(more.find_element_by_tag_name("a").get_attribute('href'))
-    	a=bot.find_elements_by_class_name("t")
-    	alb=dict()
-    	for aa in a:
-    		alb[aa.text]=aa.find_element_by_tag_name("a").get_attribute('href')
-    	#print(alb)
-    	return alb
-    def getPhotosFromAlbum(self,albumURL,direction=1, deep=20):# direction 1= next, -1= previus
-    	self.get(albumURL)
-    	first=self.find_element_by_id("thumbnail_area")
-    	self.get(first.find_element_by_tag_name("a").get_attribute('href'))
-    	imagesURL=list()
-    	tags=["bz","by","ca"]
-    	truenames=list()
-    	for n in range(deep):
-    		print(self.title," - photo...",n+1)
-    		try:
-    			for t in tags:
-    				imageurl=self.find_elements_by_class_name(t)[0].get_attribute('href')
-    				if imageurl != None:
-    					#print(imageurl)
-    					break
-    		except:
-    			print(self.current_url)
-    			return
-    		
-    		truename=imageurl.split("?")[0].split("/")[-1]
-    		if truename in truenames:
-    			print("Repeated...")
-    			break
-    		truenames.append(truename)
-
-    		imagesURL.append(imageurl)
-    		td=self.find_elements_by_tag_name("td")
-    		previusURL=td[0].find_element_by_tag_name("a").get_attribute('href')
-    		nextURL=td[1].find_element_by_tag_name("a").get_attribute('href')
-    		#print(nextURL)
-    		#print(previusURL)
-    		if direction==1:
-    			#print("Next")
-    			self.get(nextURL)
-    		elif direcction==-1:
-    			#print("Previous")
-    			self.get(previusURL)
-    		#print(n,"-   ",imageurl)
-    	return imagesURL
-
