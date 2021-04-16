@@ -34,7 +34,7 @@ for p in allpost:
 	print(p)
 ```
 ## Installing
-pip install FacebookWebBot
+pip install git+https://github.com/khaled-hassen/facebookbot.git
 ## Know issues:
 
     * Can't post images because PhantomJS limitations.
