@@ -295,8 +295,6 @@ class FacebookBot(webdriver.PhantomJS):
             tb = self.find_element_by_name("comment_text")
             tb.send_keys(text)
             tb.send_keys(Keys.ENTER)
-            return self.getScrenshotName(
-                "CommentingIn_" + self.title, screenshot, screenshotPath)
         except Exception as e:
             print("Can't comment in ", postUrl, "\n->", e)
 

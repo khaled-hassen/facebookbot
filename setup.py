@@ -19,7 +19,7 @@ setup(
     long_description=long_description,
 
     # The project's main homepage.
-    url='https://github.com/hikaruAi/FacebookBot',
+    url='https://github.com/khaled-hassen/facebookbot.git',
 
     # Author details
     author='Juan José Mendoza',
