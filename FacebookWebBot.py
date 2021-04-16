@@ -361,7 +361,11 @@ class FacebookBot(webdriver.PhantomJS):
         self.get(mm)
         b = self.find_element_by_name("body")
         b.send_keys(text)
-        self.find_element_by_name("send").click()
+        try:
+            self.find_element_by_name("send").click()
+        except NoSuchElementException:
+            self.find_element_by_name("Send").click()
+            
         return True
 
     def getGroups(self):
